@@ -19,7 +19,7 @@ public class HelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Requests Awa");
         PrintWriter writer = resp.getWriter();
-        writer.write("Response Sended");
+        writer.write("Response Send");
 
     }
 }
