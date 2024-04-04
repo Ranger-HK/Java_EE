@@ -8,18 +8,16 @@ import java.io.PrintWriter;
 
 /**
  * @Created By Ravindu Prathibha
- * @created 4/3/2024 - 3:53 PM
+ * @created 4/4/2024 - 8:56 PM
  * @project Java_EE
  */
 
-@WebServlet(urlPatterns = "/hello")
-public class HelloServlet extends HttpServlet {
-
+@WebServlet("/hi")
+public class MyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Requests Awa");
         PrintWriter writer = resp.getWriter();
-        writer.write("Response Send 2");
-
+        writer.write("Response Send");
     }
 }
