@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX with jQuery</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<section class="container-fluid p-4 bg-primary text-white">
+    <h1 class="fw-bold">AJAX With jQuery</h1>
+</section>
+<section class="container mt-3">
+
+    <!--    File Type : TXT-->
+    <div class="row">
+        <div class="col-2">
+            <button class="btn btn-success" id="btn1">Send Request To File</button>
+        </div>
+        <div class="col bg-success text-white">
+            <p id="display1"></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!--File Type : XML-->
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class="btn btn-primary" id="btn2">Send Request To XML</button>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-primary text-white">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Salary</th>
+                </tr>
+                </thead>
+                <tbody id="tblCustomer">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--File Type : JSON-->
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class="btn btn-danger" id="btn3">Send Request To JSON</button>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-danger text-white">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Salary</th>
+                </tr>
+                </thead>
+                <tbody id="tblCustomerJson">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<script src="assets/jQuery/jquery-3.6.0.min.js"></script>
+<script>
+    $("#btn1").click(function () {
+
+        console.log("Started");
+
+        $.ajax({
+            url: "db/db.txt",
+            // async:false, // default = true (async) // false = sync (blocking)
+            success: function (resp) {
+                $("#display1").text(resp);
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+
+        });
+
+        console.log("Ended");
+
+    });
+
+
+    $("#btn2").click(function () {
+        $("#tblCustomer").empty();
+        $.ajax({
+            url: "db/db.xml",
+            success: function (resp) {
+                console.log(resp); //print the xml object
+
+                //Now convert it to the jQuery Object
+                let ob = $(resp);
+                console.log(ob.children().children()); // get the customer count
+
+                // Run a for loop to the customer count and Browse and Print Customer Records to the table
+                for (let i = 0; i < ob.children().children().length; i++) {
+
+                    let id = ob.children().children().eq(i).find("id").text();
+                    let name = ob.children().children().eq(i).find("name").text();
+                    let address = ob.children().children().eq(i).find("address").text();
+                    let salary = ob.children().children().eq(i).find("salary").text();
+
+                    console.log(id, name, address, salary);
+
+                    // create a table row and set values
+                    let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td><td>${salary}</td></tr>`;
+                    $("#tblCustomer").append(row);
+                }
+
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
+
+    $("#btn3").click(function () {
+        $.ajax({
+            url: "http://localhost:8080/02_Http_Request_Web_exploded/customer",
+            success: function (resp) {
+                console.log(res);
+            }
+        });
+    });
+</script>
+</body>
+</html>
