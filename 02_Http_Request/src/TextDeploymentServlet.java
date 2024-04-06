@@ -11,10 +11,18 @@ import java.io.PrintWriter;
  * @project Java_EE
  */
 public class TextDeploymentServlet extends HttpServlet {
-    @Override
+   /* @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
         writer.write("Request Received From Descriptor Using Web.xml");
+    }*/
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+        //writer.write("Response Generated");
+        writer.write("<h1 style=\"color:blue\">Response Generated</h1>");
     }
+
 
 }
