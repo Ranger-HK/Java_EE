@@ -140,6 +140,7 @@
     $("#btn3").click(function () {
         $.ajax({
             url: "http://localhost:8080/02_Http_Request_Web_exploded/customer",
+            method:"GET ",
             success: function (resp) {
                 console.log(res);
             }
