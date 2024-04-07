@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/01_Hello_Servlet/01_Hello_Servlet.iml" filepath="$PROJECT_DIR$/01_Hello_Servlet/01_Hello_Servlet.iml" />
       <module fileurl="file://$PROJECT_DIR$/02_Http_Request/02_Http_Request.iml" filepath="$PROJECT_DIR$/02_Http_Request/02_Http_Request.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03_Mapping_Spec/03_Mapping_Spec.iml" filepath="$PROJECT_DIR$/03_Mapping_Spec/03_Mapping_Spec.iml" />
       <module fileurl="file://$PROJECT_DIR$/Java_EE.iml" filepath="$PROJECT_DIR$/Java_EE.iml" />
     </modules>
   </component>
