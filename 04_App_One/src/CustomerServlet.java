@@ -23,6 +23,9 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Create DB Connection
         try {
+            resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
+            resp.addHeader("Institute","IJSE");
+            resp.addHeader("Course","GDSE");
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
             ResultSet rst = connection.prepareStatement("SELECT  * FROM Customer").executeQuery();
