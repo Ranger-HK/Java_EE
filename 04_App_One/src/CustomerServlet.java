@@ -5,10 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @Created By Ravindu Prathibha
@@ -56,5 +53,34 @@ public class CustomerServlet extends HttpServlet {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String customerID = req.getParameter("customerID");
+        String customerName = req.getParameter("customerName");
+        String customerAddress = req.getParameter("customerAddress");
+        String customerSalary = req.getParameter("customerSalary");
+        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
+            preparedStatement.setObject(1,customerID);
+            preparedStatement.setObject(2,customerName);
+            preparedStatement.setObject(3,customerAddress);
+            preparedStatement.setObject(4,customerSalary);
+            boolean b = preparedStatement.executeUpdate()>0;
+            PrintWriter writer = resp.getWriter();
+
+            if (b){
+                writer.write("Customer Added");
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
