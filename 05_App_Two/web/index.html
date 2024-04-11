@@ -14,7 +14,7 @@
 
     <div class="row-col-3">
         <div class="col-5">
-            <form action="customer" method="post">
+            <form id="customerForm">
                 <div class="mb-3">
                     <label for="cusID" class="form-label">Customer ID</label>
                     <input type="text" class="form-control" id="cusID" placeholder="CustomerID" name="customerID">
@@ -36,7 +36,7 @@
 
                 </div>
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Save Customer</button>
+                    <button type="button" id="btnSaveCustomer" class="btn btn-primary">Save Customer</button>
                 </div>
 
             </form>
@@ -130,8 +130,9 @@
     });
 */
 
+  loadCustomers();
 
-    $("#btn3").click(function () {
+    function loadCustomers(){
         $("#tblCustomerJson").empty();
         $.ajax({
             url:"customer",
@@ -145,7 +146,30 @@
                 }
             }
         });
+    }
+
+    //ReFresh Table After Loading
+    $("#btn3").click(function () {
+       loadCustomers();
     });
+
+
+    //Save Customer
+    $("#btnSaveCustomer").click(function () {
+        let data = $("#customerForm").serialize(); //return query string of form with name:type
+        console.log(data);
+        $.ajax({
+            url:"customer",
+            method:"POST",
+            data:data,//if we send data with the request
+            success:function (resp){
+                alert(resp)
+                loadCustomers();
+
+            }
+        });
+
+    })
 
 
 </script>
