@@ -16,13 +16,14 @@ import java.sql.*;
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
 
+    //Load Customers
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Create DB Connection
         try {
             resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
-            resp.addHeader("Institute","IJSE");
-            resp.addHeader("Course","GDSE");
+            resp.addHeader("Institute", "IJSE");
+            resp.addHeader("Course", "GDSE");
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
             ResultSet rst = connection.prepareStatement("SELECT  * FROM Customer").executeQuery();
@@ -55,26 +56,28 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
+
+    //Save Customer
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerID = req.getParameter("customerID");
         String customerName = req.getParameter("customerName");
         String customerAddress = req.getParameter("customerAddress");
         String customerSalary = req.getParameter("customerSalary");
-        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+        System.out.println(customerID + " " + customerName + " " + customerAddress + " " + customerSalary);
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
-            preparedStatement.setObject(1,customerID);
-            preparedStatement.setObject(2,customerName);
-            preparedStatement.setObject(3,customerAddress);
-            preparedStatement.setObject(4,customerSalary);
-            boolean b = preparedStatement.executeUpdate()>0;
+            preparedStatement.setObject(1, customerID);
+            preparedStatement.setObject(2, customerName);
+            preparedStatement.setObject(3, customerAddress);
+            preparedStatement.setObject(4, customerSalary);
+            boolean b = preparedStatement.executeUpdate() > 0;
             PrintWriter writer = resp.getWriter();
 
-            if (b){
+            if (b) {
                 writer.write("Customer Added");
             }
 
@@ -84,6 +87,7 @@ public class CustomerServlet extends HttpServlet {
 
     }
 
+    //Delete Customer
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerID = req.getParameter("CusID");
@@ -93,17 +97,53 @@ public class CustomerServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Customer WHERE customerID=?");
-            preparedStatement.setObject(1,customerID);
+            preparedStatement.setObject(1, customerID);
 
-            boolean b = preparedStatement.executeUpdate()>0;
+            boolean b = preparedStatement.executeUpdate() > 0;
             PrintWriter writer = resp.getWriter();
 
-            if (b){
+            if (b) {
                 writer.write("Customer Deleted");
             }
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    //Update Customer
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String customerID = req.getParameter("customerID");
+        String customerName = req.getParameter("customerName");
+        String customerAddress = req.getParameter("customerAddress");
+        String customerSalary = req.getParameter("customerSalary");
+        System.out.println(customerID + " " + customerName + " " + customerAddress + " " + customerSalary);
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Customer SET name=?,address=?,salary=? WHERE customerID=?");
+            preparedStatement.setObject(1, customerName);
+            preparedStatement.setObject(2, customerAddress);
+            preparedStatement.setObject(3, customerSalary);
+            preparedStatement.setObject(4, customerID);
+            boolean b = preparedStatement.executeUpdate() > 0;
+            PrintWriter writer = resp.getWriter();
+
+            if (b) {
+                writer.write("Customer Added");
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            resp.sendError(500, e.getMessage());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            resp.sendError(500, throwables.getMessage());
+        }
+
     }
 }

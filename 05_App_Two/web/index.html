@@ -37,9 +37,9 @@
 
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary" id="btnSaveCustomer" type="button">Save Customer</button>
-                    <button type="button" id="btnUpdateCustomer" class="btn btn-warning">Update Customer</button>
-                    <button class="btn btn-danger" id="btnDeleteCustomer" type="button">Delete Customer</button>
+                    <button class="btn btn-primary" id="btnSaveCustomer" type="button">Save</button>
+                    <button type="button" id="btnUpdateCustomer" class="btn btn-warning">Update</button>
+                    <button class="btn btn-danger" id="btnDeleteCustomer" type="button">Delete</button>
                     <button class="btn btn-success" id="btnGetAllCustomers">Get All</button>
                 </div>
 
@@ -126,24 +126,6 @@
        });
    */
 
-    loadCustomers();
-
-    //Load Table -- Get Data
-    function loadCustomers() {
-        $("#tblCustomerJson").empty();
-        $.ajax({
-            url: "customer",
-            method: "GET",
-            //dataType:"json",// please convert to the response
-            success: function (resp) {
-                console.log(resp);
-                for (const customer of resp) {
-                    let row = `<tr><td>${customer.customerId}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`
-                    $("#tblCustomerJson").append(row);
-                }
-            }
-        });
-    }
 
 
     //ReFresh Table After Loading
@@ -153,7 +135,7 @@
 
 
 
-    //Save Customer -- data send type-->>> x-www form urlencoded/query string
+    //Save Customer -- data send type-->>> x-www form urlencoded
     $("#btnSaveCustomer").click(function () {
         let data = $("#customerForm").serialize(); //return query string of form with name:type
         console.log(data);
@@ -184,6 +166,59 @@
             }
         });
     });
+
+
+    //Update Customer -- data send type -->> query string
+    $("#btnUpdateCustomer").click(function () {
+        let formData = $("#customerForm").serialize();
+        console.log(formData);
+
+        $.ajax({
+            url:"customer?"+formData,
+            method:"PUT",
+            /*data: formData,*/
+            success:function (res){
+                alert(res)
+                loadCustomers();
+            }
+        });
+    });
+
+
+    loadCustomers();
+    //Load Table -- Get Data
+    function loadCustomers() {
+        $("#tblCustomerJson").empty();
+        $.ajax({
+            url: "customer",
+            method: "GET",
+            //dataType:"json",// please convert to the response
+            success: function (resp) {
+                console.log(resp);
+                for (const customer of resp) {
+                    let row = `<tr><td>${customer.customerId}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`
+                    $("#tblCustomerJson").append(row);
+                }
+                bindClickEvents();
+            }
+        });
+    }
+
+    //Table Row Click And Load It To TextFields
+    function bindClickEvents(){
+        $("#tblCustomerJson>tr").click(function (){
+            let id = $(this).children().eq(0).text();
+            let name = $(this).children().eq(1).text();
+            let address = $(this).children().eq(2).text();
+            let salary = $(this).children().eq(3).text();
+            console.log(id);
+
+            $("#cusID").val(id);
+            $("#cusName").val(name);
+            $("#cusAddress").val(address);
+            $("#cusSalary").val(salary);
+        });
+    }
 
 
 </script>
