@@ -156,7 +156,7 @@
     });
 
 
-    //Save Customer
+    //Save Customer -- data send type-->>> x-www form urlencoded/query string
     $("#btnSaveCustomer").click(function () {
         let data = $("#customerForm").serialize(); //return query string of form with name:type
         console.log(data);
@@ -173,13 +173,16 @@
 
     });
 
-    //Delete Customer
+    //Delete Customer -- data send type-->> query string
     $("#btnDeleteCustomer").click(function () {
+        let customerID = $("#cusID").val();
+
         $.ajax({
-            url: "customer",
+            url:"customer?CusID="+customerID,
             method: "DELETE",
             success: function (resp) {
-                console.log(resp)
+                alert(resp);
+                loadCustomers();
             }
         });
     });
