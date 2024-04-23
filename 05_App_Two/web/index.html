@@ -128,6 +128,7 @@
 
     loadCustomers();
 
+    //Load Table -- Get Data
     function loadCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
@@ -144,10 +145,12 @@
         });
     }
 
+
     //ReFresh Table After Loading
     $("#btn3").click(function () {
         loadCustomers();
     });
+
 
 
     //Save Customer -- data send type-->>> x-www form urlencoded/query string
@@ -166,6 +169,7 @@
         });
 
     });
+
 
     //Delete Customer -- data send type-->> query string
     $("#btnDeleteCustomer").click(function () {
