@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/03_Mapping_Spec/03_Mapping_Spec.iml" filepath="$PROJECT_DIR$/03_Mapping_Spec/03_Mapping_Spec.iml" />
       <module fileurl="file://$PROJECT_DIR$/04_App_One/04_App_One.iml" filepath="$PROJECT_DIR$/04_App_One/04_App_One.iml" />
       <module fileurl="file://$PROJECT_DIR$/05_App_Two/05_App_Two.iml" filepath="$PROJECT_DIR$/05_App_Two/05_App_Two.iml" />
+      <module fileurl="file://$PROJECT_DIR$/06_Json_Processing/06_Json_Processing.iml" filepath="$PROJECT_DIR$/06_Json_Processing/06_Json_Processing.iml" />
       <module fileurl="file://$PROJECT_DIR$/Java_EE.iml" filepath="$PROJECT_DIR$/Java_EE.iml" />
     </modules>
   </component>
