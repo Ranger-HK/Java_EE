@@ -75,6 +75,9 @@ public class CustomerServlet extends HttpServlet {
         System.out.println(customerID + " " + customerName + " " + customerAddress + " " + customerSalary);
         PrintWriter writer = resp.getWriter();
 
+        resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
+
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
@@ -87,7 +90,9 @@ public class CustomerServlet extends HttpServlet {
 
             if (preparedStatement.executeUpdate() > 0) {
                 JsonObjectBuilder response = Json.createObjectBuilder();
-                response.add("status", 200);
+                resp.setStatus(HttpServletResponse.SC_CREATED);//201
+
+                response.add("status", 201);
                 response.add("message", "Successfully Added");
                 response.add("data", "");
                 writer.print(response.build());
@@ -95,18 +100,22 @@ public class CustomerServlet extends HttpServlet {
 
         } catch (ClassNotFoundException e) {
             JsonObjectBuilder response = Json.createObjectBuilder();
-            response.add("status", 500);
+            response.add("status", 400);
             response.add("message", "Error");
             response.add("data", e.getLocalizedMessage());
             writer.print(response.build());
+
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);//400
             e.printStackTrace();
 
         } catch (SQLException throwables) {
             JsonObjectBuilder response = Json.createObjectBuilder();
-            response.add("status", 500);
+            response.add("status", 400);
             response.add("message", "Error");
             response.add("data", throwables.getLocalizedMessage());
             writer.print(response.build());
+
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);//400
             throwables.printStackTrace();
         }
 
