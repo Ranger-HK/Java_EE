@@ -53,9 +53,9 @@ public class CustomerServlet extends HttpServlet {
             //print response
             PrintWriter writer = resp.getWriter();
             JsonObjectBuilder response = Json.createObjectBuilder();
-            response.add("status","200");
-            response.add("message","Done");
-            response.add("data",arrayBuilder.build());
+            response.add("status", "200");
+            response.add("message", "Done");
+            response.add("data", arrayBuilder.build());
 
             writer.print(response.build());
 
@@ -73,24 +73,41 @@ public class CustomerServlet extends HttpServlet {
         String customerAddress = req.getParameter("customerAddress");
         String customerSalary = req.getParameter("customerSalary");
         System.out.println(customerID + " " + customerName + " " + customerAddress + " " + customerSalary);
+        PrintWriter writer = resp.getWriter();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
+
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
             preparedStatement.setObject(1, customerID);
             preparedStatement.setObject(2, customerName);
             preparedStatement.setObject(3, customerAddress);
             preparedStatement.setObject(4, customerSalary);
-            boolean b = preparedStatement.executeUpdate() > 0;
-            PrintWriter writer = resp.getWriter();
 
-            if (b) {
-                writer.write("Customer Added");
+            if (preparedStatement.executeUpdate() > 0) {
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status", 200);
+                response.add("message", "Successfully Added");
+                response.add("data", "");
+                writer.print(response.build());
             }
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException e) {
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status", 500);
+            response.add("message", "Error");
+            response.add("data", e.getLocalizedMessage());
+            writer.print(response.build());
             e.printStackTrace();
+
+        } catch (SQLException throwables) {
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status", 500);
+            response.add("message", "Error");
+            response.add("data", throwables.getLocalizedMessage());
+            writer.print(response.build());
+            throwables.printStackTrace();
         }
 
     }
