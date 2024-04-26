@@ -43,7 +43,7 @@ public class CustomerServlet extends HttpServlet {
                 System.out.println(customerId + " " + name + " " + address + " " + salary);
 
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("id", rst.getString(1));
+                objectBuilder.add("customerId", rst.getString(1));
                 objectBuilder.add("name", rst.getString(2));
                 objectBuilder.add("address", rst.getString(3));
                 objectBuilder.add("salary", rst.getDouble(4));
@@ -52,7 +52,12 @@ public class CustomerServlet extends HttpServlet {
             }
             //print response
             PrintWriter writer = resp.getWriter();
-            writer.println(arrayBuilder.build());
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status","200");
+            response.add("message","Done");
+            response.add("data",arrayBuilder.build());
+
+            writer.print(response.build());
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

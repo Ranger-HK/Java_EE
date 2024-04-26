@@ -71,62 +71,6 @@
 
 <script src="assets/jQuery/jquery-3.6.0.min.js"></script>
 <script>
-    /*   $("#btn1").click(function () {
-
-           console.log("Started");
-
-           $.ajax({
-               url: "db/db.txt",
-               // async:false, // default = true (async) // false = sync (blocking)
-               success: function (resp) {
-                   $("#display1").text(resp);
-               },
-               error: function (xhr) {
-                   console.log(xhr);
-               }
-
-           });
-
-           console.log("Ended");
-
-       });
-
-
-       $("#btn2").click(function () {
-           $("#tblCustomer").empty();
-           $.ajax({
-               url: "db/db.xml",
-               success: function (resp) {
-                   console.log(resp); //print the xml object
-
-                   //Now convert it to the jQuery Object
-                   let ob = $(resp);
-                   console.log(ob.children().children()); // get the customer count
-
-                   // Run a for loop to the customer count and Browse and Print Customer Records to the table
-                   for (let i = 0; i < ob.children().children().length; i++) {
-
-                       let id = ob.children().children().eq(i).find("id").text();
-                       let name = ob.children().children().eq(i).find("name").text();
-                       let address = ob.children().children().eq(i).find("address").text();
-                       let salary = ob.children().children().eq(i).find("salary").text();
-
-                       console.log(id, name, address, salary);
-
-                       // create a table row and set values
-                       let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td><td>${salary}</td></tr>`;
-                       $("#tblCustomer").append(row);
-                   }
-
-               },
-               error: function (xhr) {
-                   console.log(xhr);
-               }
-           });
-       });
-   */
-
-
 
     //ReFresh Table After Loading
     $("#btn3").click(function () {
@@ -195,7 +139,7 @@
             //dataType:"json",// please convert to the response
             success: function (resp) {
                 console.log(resp);
-                for (const customer of resp) {
+                for (const customer of resp.data) {
                     let row = `<tr><td>${customer.customerId}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`
                     $("#tblCustomerJson").append(row);
                 }
