@@ -16,7 +16,6 @@ import java.io.PrintWriter;
 @WebServlet(urlPatterns = "/json")
 public class JSONServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
