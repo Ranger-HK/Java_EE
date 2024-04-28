@@ -130,18 +130,38 @@
     });
 
 
-    //Update Customer -- data send type -->> query string
+    //Update Customer -- data send type -->> json
     $("#btnUpdateCustomer").click(function () {
-        let formData = $("#customerForm").serialize();
-        console.log(formData);
+
+        $("#cusID").val();
+        $("#cusName").val();
+        $("#cusAddress").val();
+        $("#cusSalary").val();
+
+        var cusOb = {
+            id:$("#cusID").val(),
+            name:$("#cusName").val(),
+            address:$("#cusAddress").val(),
+            salary:$("#cusSalary").val()
+        }
 
         $.ajax({
-            url:"customer?"+formData,
+            url:"customer",
             method:"PUT",
-            /*data: formData,*/
+            contentType:"application/json",
+            data:JSON.stringify(cusOb),
             success:function (res){
-                alert(res)
-                loadCustomers();
+                if (res.status==200){
+                    alert(res.message);
+                    loadCustomers();
+                }else if (res.status==400){
+                    alert(res.message);
+                }else {
+                    alert(res.data);
+                }
+            },
+            error:function (ob,errorStus){
+                console.log(ob);
             }
         });
     });
