@@ -133,11 +133,7 @@
     //Update Customer -- data send type -->> json
     $("#btnUpdateCustomer").click(function () {
 
-        $("#cusID").val();
-        $("#cusName").val();
-        $("#cusAddress").val();
-        $("#cusSalary").val();
-
+        //creating a js object with relevant data which you wanna send to the server
         var cusOb = {
             id:$("#cusID").val(),
             name:$("#cusName").val(),
@@ -148,20 +144,20 @@
         $.ajax({
             url:"customer",
             method:"PUT",
-            contentType:"application/json",
-            data:JSON.stringify(cusOb),
+            contentType:"application/json", //you should state request content type using MIME types
+            data:JSON.stringify(cusOb), //format js object to valid json object
             success:function (res){
-                if (res.status==200){
+                if (res.status==200){ //process is ok
                     alert(res.message);
                     loadCustomers();
-                }else if (res.status==400){
+                }else if (res.status==400){ //there is a problem with the client side
                     alert(res.message);
                 }else {
-                    alert(res.data);
+                    alert(res.data); //else may be there is a exception
                 }
             },
             error:function (ob,errorStus){
-                console.log(ob);
+                console.log(ob); //other error
             }
         });
     });
