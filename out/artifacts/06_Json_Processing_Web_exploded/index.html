@@ -111,9 +111,20 @@
         $.ajax({
             url:"customer?CusID="+customerID,
             method: "DELETE",
-            success: function (resp) {
-                alert(resp);
-                loadCustomers();
+            success: function (res) {
+                if (res.status==200){
+                    alert(res.message);
+                    loadCustomers();
+                }else if (res.status==400){
+                    alert(res.data);
+                }else {
+                    alert(res.data);
+                }
+            },
+            error:function (ob,status,t){
+                console.log(ob);
+                console.log(status);
+                console.log(t);
             }
         });
     });
