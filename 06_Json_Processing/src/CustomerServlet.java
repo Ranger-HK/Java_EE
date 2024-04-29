@@ -22,12 +22,20 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try {
+            String option = req.getParameter("option");
+
             //the media type of content of the response
             resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
 
             //Create DB Connection
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "19990202Ravi@:&pra");
+
+            switch (option){
+                case "SEARCH":
+                    break;
+                case "GETALL":
+
             ResultSet rst = connection.prepareStatement("SELECT  * FROM Customer").executeQuery();
 
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
@@ -56,7 +64,9 @@ public class CustomerServlet extends HttpServlet {
             response.add("data", arrayBuilder.build());
 
             writer.print(response.build());
+            break;
 
+            }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

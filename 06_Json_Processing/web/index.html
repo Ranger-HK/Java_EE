@@ -168,7 +168,8 @@
     function loadCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
-            url: "customer",
+            //url: "customer",
+            url:"customer?option=GETALL",
             method: "GET",
             //dataType:"json",// please convert to the response
             success: function (resp) {

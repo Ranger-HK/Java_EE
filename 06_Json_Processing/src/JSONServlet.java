@@ -62,7 +62,16 @@ public class JSONServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonArray jsonArray = reader.readArray();
 
+        for (JsonValue jsonValue : jsonArray) {
+            String customerID = jsonValue.asJsonObject().getString("id");
+            String customerName = jsonValue.asJsonObject().getString("name");
+            String customerAddress = jsonValue.asJsonObject().getString("address");
+            String customerSalary = jsonValue.asJsonObject().getString("salary");
+            System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+        }
     }
 
 
