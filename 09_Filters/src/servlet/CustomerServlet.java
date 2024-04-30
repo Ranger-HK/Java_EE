@@ -1,19 +1,20 @@
-/**
- * @Created By Ravindu Prathibha
- * @created 4/11/2024 - 2:20 PM
- * @project Java_EE
- */
-import javax.annotation.Resource;
+package servlet;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import javax.json.*;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @Created By Ravindu Prathibha
@@ -24,13 +25,11 @@ import java.sql.*;
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
 
-    @Resource(name = "java:comp/env/jdbc/pool")
-    DataSource dataSource;
-
     //Get All Customers
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
         try {
             String option = req.getParameter("option");
 
@@ -38,10 +37,9 @@ public class CustomerServlet extends HttpServlet {
             resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
 
             //Create DB Connection
-            Connection connection = dataSource.getConnection();
+            Connection connection = bds.getConnection();
 
-
-            switch (option){
+            switch (option) {
                 case "SEARCH":
                     break;
                 case "GETALL":
@@ -78,7 +76,6 @@ public class CustomerServlet extends HttpServlet {
 
             }
             connection.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,10 +94,10 @@ public class CustomerServlet extends HttpServlet {
 
         resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
 
-
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
         try {
-            Connection connection = dataSource.getConnection();
-
+            Connection connection = bds.getConnection();
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
             preparedStatement.setObject(1, customerID);
@@ -140,35 +137,36 @@ public class CustomerServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
 
-        try {
-            Connection connection = dataSource.getConnection();
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
 
+        try {
+            Connection connection = bds.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Customer WHERE customerID=?");
             preparedStatement.setObject(1, customerID);
 
-            if (preparedStatement.executeUpdate()>0){
+            if (preparedStatement.executeUpdate() > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("status",200);
-                objectBuilder.add("data","");
-                objectBuilder.add("message","Successfully Deleted");
+                objectBuilder.add("status", 200);
+                objectBuilder.add("data", "");
+                objectBuilder.add("message", "Successfully Deleted");
                 writer.print(objectBuilder.build());
 
-            }else{
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("status",400);
-                objectBuilder.add("data","Wrong Id Inserted");
-                objectBuilder.add("message","");
+                objectBuilder.add("status", 400);
+                objectBuilder.add("data", "Wrong Id Inserted");
+                objectBuilder.add("message", "");
                 writer.print(objectBuilder.build());
             }
             connection.close();
-
-        } catch (SQLException throwables){
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             // resp.sendError(500,throwables.getMessage());
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            objectBuilder.add("status",500);
-            objectBuilder.add("message","Error");
-            objectBuilder.add("data",throwables.getLocalizedMessage());
+            objectBuilder.add("status", 500);
+            objectBuilder.add("message", "Error");
+            objectBuilder.add("data", throwables.getLocalizedMessage());
             writer.print(objectBuilder.build());
         }
     }
@@ -184,15 +182,17 @@ public class CustomerServlet extends HttpServlet {
         String customerName = jsonObject.getString("name");
         String customerAddress = jsonObject.getString("address");
         String customerSalary = jsonObject.getString("salary");
-        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+        System.out.println(customerID + " " + customerName + " " + customerAddress + " " + customerSalary);
 
         PrintWriter writer = resp.getWriter();
 
         resp.setContentType("application/json");
 
-        try {
-            Connection connection = dataSource.getConnection();
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
 
+        try {
+            Connection connection = bds.getConnection();
 
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Customer SET name=?,address=?,salary=? WHERE customerID=?");
             preparedStatement.setObject(1, customerName);
@@ -203,26 +203,25 @@ public class CustomerServlet extends HttpServlet {
 
             if (preparedStatement.executeUpdate() > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("status",200);
-                objectBuilder.add("message","Successfully Updated");
-                objectBuilder.add("data","");
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Successfully Updated");
+                objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
-            }else {
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("status",400);
-                objectBuilder.add("message","Update Failed");
-                objectBuilder.add("data","");
+                objectBuilder.add("status", 400);
+                objectBuilder.add("message", "Update Failed");
+                objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
             }
             connection.close();
 
         } catch (SQLException throwables) {
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            objectBuilder.add("status",500);
-            objectBuilder.add("message","Update Failed");
-            objectBuilder.add("data",throwables.getLocalizedMessage());
+            objectBuilder.add("status", 500);
+            objectBuilder.add("message", "Update Failed");
+            objectBuilder.add("data", throwables.getLocalizedMessage());
             writer.print(objectBuilder.build());
         }
     }
 }
-

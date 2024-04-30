@@ -168,7 +168,6 @@
     function loadCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
-            //url: "customer",
             url:"customer?option=GETALL",
             method: "GET",
             //dataType:"json",// please convert to the response
@@ -198,6 +197,7 @@
             $("#cusSalary").val(salary);
         });
     }
+
 
 
 </script>

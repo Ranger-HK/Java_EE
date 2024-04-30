@@ -10,6 +10,8 @@
       <module fileurl="file://$PROJECT_DIR$/06_Json_Processing/06_Json_Processing.iml" filepath="$PROJECT_DIR$/06_Json_Processing/06_Json_Processing.iml" />
       <module fileurl="file://$PROJECT_DIR$/07_InbuildCP/07_InbuildCP.iml" filepath="$PROJECT_DIR$/07_InbuildCP/07_InbuildCP.iml" />
       <module fileurl="file://$PROJECT_DIR$/08_DBCP/08_DBCP.iml" filepath="$PROJECT_DIR$/08_DBCP/08_DBCP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/09_Filters/09_Filters.iml" filepath="$PROJECT_DIR$/09_Filters/09_Filters.iml" />
+      <module fileurl="file://$PROJECT_DIR$/10_FrontEnd/10_FrontEnd.iml" filepath="$PROJECT_DIR$/10_FrontEnd/10_FrontEnd.iml" />
       <module fileurl="file://$PROJECT_DIR$/Java_EE.iml" filepath="$PROJECT_DIR$/Java_EE.iml" />
     </modules>
   </component>
