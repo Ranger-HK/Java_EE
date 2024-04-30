@@ -1,14 +1,13 @@
 package servlet;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-
+import javax.annotation.Resource;
 import javax.json.*;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -25,11 +24,13 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
 
+    @Resource(name = "java:comp/env/jdbc/pool")
+    DataSource dataSource;
+
     //Get All Customers
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletContext servletContext = req.getServletContext();
-        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
+
         try {
             String option = req.getParameter("option");
 
@@ -37,7 +38,7 @@ public class CustomerServlet extends HttpServlet {
             resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
 
             //Create DB Connection
-            Connection connection = bds.getConnection();
+            Connection connection = dataSource.getConnection();
 
             switch (option) {
                 case "SEARCH":
@@ -94,10 +95,9 @@ public class CustomerServlet extends HttpServlet {
 
         resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
 
-        ServletContext servletContext = req.getServletContext();
-        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
+
         try {
-            Connection connection = bds.getConnection();
+            Connection connection = dataSource.getConnection();
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
             preparedStatement.setObject(1, customerID);
@@ -137,11 +137,9 @@ public class CustomerServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
 
-        ServletContext servletContext = req.getServletContext();
-        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
 
         try {
-            Connection connection = bds.getConnection();
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Customer WHERE customerID=?");
             preparedStatement.setObject(1, customerID);
 
@@ -188,11 +186,9 @@ public class CustomerServlet extends HttpServlet {
 
         resp.setContentType("application/json");
 
-        ServletContext servletContext = req.getServletContext();
-        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("obs");
 
         try {
-            Connection connection = bds.getConnection();
+            Connection connection = dataSource.getConnection();
 
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Customer SET name=?,address=?,salary=? WHERE customerID=?");
             preparedStatement.setObject(1, customerName);
