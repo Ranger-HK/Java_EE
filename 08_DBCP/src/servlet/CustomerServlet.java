@@ -30,10 +30,12 @@ public class CustomerServlet extends HttpServlet {
             Connection connection = bds.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM Customer");
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 String id = resultSet.getString(1);
                 System.out.println(id);
             }
+            connection.close();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -49,10 +51,12 @@ public class CustomerServlet extends HttpServlet {
             Connection connection = bds.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM Customer");
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 String id = resultSet.getString(1);
                 System.out.println(id);
             }
+            connection.close();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
