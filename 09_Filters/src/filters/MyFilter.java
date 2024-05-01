@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /*@WebFilter(urlPatterns = {"/customer","/item","/order"})*/ //---> selected url mapping
-//@WebFilter(urlPatterns = "/*") //---> multi url mapping
-@WebFilter(urlPatterns = "/item") //---> single url mapping
+@WebFilter(urlPatterns = "/*") //---> multi url mapping
+//@WebFilter(urlPatterns = "/item") //---> single url mapping
 public class MyFilter implements Filter {
 
     public MyFilter() {
