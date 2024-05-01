@@ -230,6 +230,8 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
+
+    //For Preflight Requests -->> DELETE|PUT
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin","*");
