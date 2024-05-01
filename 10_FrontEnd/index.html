@@ -38,9 +38,9 @@
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary" id="btnSaveCustomer" type="button">Save</button>
-                    <button class="btn btn-warning" id="btnUpdateCustomer" type="button">Update</button>
+                    <button type="button" id="btnUpdateCustomer" class="btn btn-warning">Update</button>
                     <button class="btn btn-danger" id="btnDeleteCustomer" type="button">Delete</button>
-                    <button class="btn btn-success" id="btnGetAllCustomers">Get All</button>
+                    <button class="btn btn-success" id="btnGetAllCustomers" type="button">Get All</button>
                 </div>
 
             </form>
@@ -72,48 +72,49 @@
 <script src="assets/jQuery/jquery-3.6.0.min.js"></script>
 <script>
 
-    $("#btnGetAllCustomers").click(function (){
-
-        loadAllCustomers();
+    //ReFresh Table After Loading
+    $("#btn3").click(function () {
+        loadCustomers();
     });
 
-    $("#btnSaveCustomer").click(function (){
-        var data = $("#customerForm").serialize();
+
+
+    //Save Customer -- data send type-->>> x-www form urlencoded
+    $("#btnSaveCustomer").click(function () {
+        let data = $("#customerForm").serialize(); //return query string of form with name:type
+        console.log(data);
         $.ajax({
             url: "http://localhost:8080/09_Filters_Web_exploded/customer",
             method: "POST",
-            data: data,
-            success:function (res){
+            data: data,//if we send data with the request
+            success: function (resp) {
                 if (res.status==200){
-                    alert(res.message);
-                    loadAllCustomers();
+                    alert(resp.message);
+                    loadCustomers();
                 }else {
-                    alert(res.data);
+                    alert(resp.data);
                 }
-
             },
-            error:function (ob, textStatus, error){
-                alert(textStatus.data);
-                console.log(ob.responseText);
-                let d = $(ob.responseText).find("body").children().eq(4).text();
-                console.log(d);
+            error:function (ob,textStatus,error) {
+                alert(textStatus);//content type -->>data
+                //console.log(ob.responseText);
             }
         });
+
     });
 
-    $("#btnDeleteCustomer").click(function (){
 
+    //Delete Customer -- data send type-->> query string
+    $("#btnDeleteCustomer").click(function () {
         let customerID = $("#cusID").val();
 
         $.ajax({
-            url:"http://localhost:8080/09_Filters_Web_exploded/customer?cusID"+customerID,
-            method:"DELETE",
-            /*data:data,*/
-            success:function (res){
-
+            url:"http://localhost:8080/09_Filters_Web_exploded/customer?CusID="+customerID,
+            method: "DELETE",
+            success: function (res) {
                 if (res.status==200){
                     alert(res.message);
-                    loadAllCustomers();
+                    loadCustomers();
                 }else if (res.status==400){
                     alert(res.data);
                 }else {
@@ -128,13 +129,11 @@
         });
     });
 
-    $("#btnUpdateCustomer").click(function (){
 
-        $("#cusID").val();
-        $("#cusName").val();
-        $("#cusAddress").val();
-        $("#cusSalary").val();
+    //Update Customer -- data send type -->> json
+    $("#btnUpdateCustomer").click(function () {
 
+        //creating a js object with relevant data which you wanna send to the server
         var cusOb = {
             id:$("#cusID").val(),
             name:$("#cusName").val(),
@@ -145,48 +144,62 @@
         $.ajax({
             url:"http://localhost:8080/09_Filters_Web_exploded/customer",
             method:"PUT",
-            /*data: formData,*/
-            contentType:"applicatin/json",
-            data:JSON.stringify(cusOb),
+            contentType:"application/json", //you should state request content type using MIME types
+            data:JSON.stringify(cusOb), //format js object to valid json object
             success:function (res){
-
-                if (res.status==200){
+                if (res.status==200){ //process is ok
                     alert(res.message);
-                    loadAllCustomers();
-                }else if (res.status==400){
+                    loadCustomers();
+                }else if (res.status==400){ //there is a problem with the client side
                     alert(res.message);
                 }else {
-                    alert(res.data);
+                    alert(res.data); //else may be there is a exception
                 }
             },
             error:function (ob,errorStus){
-                console.log(ob);
+                console.log(ob); //other error
             }
         });
     });
 
-    loadAllCustomers();
-    function loadAllCustomers(){
-        $("tblCustomerJson").empty();
+
+    loadCustomers();
+    //Load Table -- Get Data
+    function loadCustomers() {
+        $("#tblCustomerJson").empty();
         $.ajax({
+            //url: "customer",
             url:"http://localhost:8080/09_Filters_Web_exploded/customer?option=GETALL",
-            method:"GET",
-            success:function (resp){
-                for(const customer of resp.data){
-                    console.log(customer.id)
-                    let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`;
+            method: "GET",
+            //dataType:"json",// please convert to the response
+            success: function (resp) {
+                console.log(resp);
+                for (const customer of resp.data) {
+                    let row = `<tr><td>${customer.customerId}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`
                     $("#tblCustomerJson").append(row);
-
                 }
-
+                bindClickEvents();
             }
         });
+    }
 
+    //Table Row Click And Load It To TextFields
+    function bindClickEvents(){
+        $("#tblCustomerJson>tr").click(function (){
+            let id = $(this).children().eq(0).text();
+            let name = $(this).children().eq(1).text();
+            let address = $(this).children().eq(2).text();
+            let salary = $(this).children().eq(3).text();
+            console.log(id);
+
+            $("#cusID").val(id);
+            $("#cusName").val(name);
+            $("#cusAddress").val(address);
+            $("#cusSalary").val(salary);
+        });
     }
 
 
-
 </script>
-
 </body>
 </html>
