@@ -88,7 +88,7 @@
             method: "POST",
             data: data,//if we send data with the request
             success: function (resp) {
-                if (res.status==200){
+                if (resp.status==200){
                     alert(resp.message);
                     loadCustomers();
                 }else {

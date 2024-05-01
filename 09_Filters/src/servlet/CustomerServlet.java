@@ -41,7 +41,7 @@ public class CustomerServlet extends HttpServlet {
             //the media type of content of the response
             resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
 
-            //Create DB Connection
+
             Connection connection = dataSource.getConnection();
             resp.addHeader("Access-Control-Allow-Origin","*");
 
@@ -104,7 +104,6 @@ public class CustomerServlet extends HttpServlet {
 
         try {
             Connection connection = dataSource.getConnection();
-
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
             preparedStatement.setObject(1, customerID);
@@ -229,6 +228,13 @@ public class CustomerServlet extends HttpServlet {
             objectBuilder.add("data",throwables.getLocalizedMessage());
             writer.print(objectBuilder.build());
         }
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.addHeader("Access-Control-Allow-Methods","DELETE,PUT");
+        resp.addHeader("Access-Control-Allow-Headers","Content-Type");
     }
 }
 
