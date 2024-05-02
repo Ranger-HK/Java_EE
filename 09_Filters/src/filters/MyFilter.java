@@ -28,14 +28,18 @@ public class MyFilter implements Filter {
         /*System.out.println("Do Filter Method called");*/
         System.out.println("First");
 
+        //Cast ServletRequest to HttpServletRequest to access addHeader Method
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        //Without this line the request will not proceed to the servlet
         filterChain.doFilter(servletRequest, servletResponse);
 
+        //Intercept the response object and add somthing new
         PrintWriter writer = servletResponse.getWriter();
         writer.write("Added from MyFilter");
 
+        //add header info to response
         response.addHeader("MyCompany","IJSE");
 
         System.out.println("Second");
