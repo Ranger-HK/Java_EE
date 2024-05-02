@@ -2,6 +2,8 @@ package filters;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -26,10 +28,15 @@ public class MyFilter implements Filter {
         /*System.out.println("Do Filter Method called");*/
         System.out.println("First");
 
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+
         filterChain.doFilter(servletRequest, servletResponse);
 
         PrintWriter writer = servletResponse.getWriter();
         writer.write("Added from MyFilter");
+
+        response.addHeader("MyCompany","IJSE");
 
         System.out.println("Second");
     }
