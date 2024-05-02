@@ -43,7 +43,7 @@ public class CustomerServlet extends HttpServlet {
 
 
             Connection connection = dataSource.getConnection();
-            resp.addHeader("Access-Control-Allow-Origin","*");
+           // resp.addHeader("Access-Control-Allow-Origin","*");
 
             switch (option){
                 case "SEARCH":
@@ -100,7 +100,7 @@ public class CustomerServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         resp.setContentType("application/json"); //MIME Types (Multipurpose Internet Mail Extensions)
-        resp.addHeader("Access-Control-Allow-Origin","*");
+        //resp.addHeader("Access-Control-Allow-Origin","*");
 
         try {
             Connection connection = dataSource.getConnection();
@@ -142,7 +142,7 @@ public class CustomerServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
-        resp.addHeader("Access-Control-Allow-Origin","*");
+       // resp.addHeader("Access-Control-Allow-Origin","*");
 
         try {
             Connection connection = dataSource.getConnection();
@@ -193,7 +193,7 @@ public class CustomerServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         resp.setContentType("application/json");
-        resp.addHeader("Access-Control-Allow-Origin","*");
+       // resp.addHeader("Access-Control-Allow-Origin","*");
 
         try {
             Connection connection = dataSource.getConnection();
@@ -231,12 +231,12 @@ public class CustomerServlet extends HttpServlet {
     }
 
 
-    //For Preflight Requests -->> DELETE|PUT
+   /* //For Preflight Requests -->> DELETE|PUT
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin","*");
         resp.addHeader("Access-Control-Allow-Methods","DELETE,PUT");
         resp.addHeader("Access-Control-Allow-Headers","Content-Type");
-    }
+    }*/
 }
 
